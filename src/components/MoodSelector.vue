@@ -4,9 +4,13 @@
       v-for="mood in moods"
       :key="mood.value"
       :class="[
-        'px-4 py-2 rounded-lg transition-colors duration-200',
-        'bg-gray-200 hover:bg-gray-300',
-        { 'border-2 border-blue-500 bg-blue-500 shadow-md': isSelected(mood.value) }
+        /* 固定按钮高度并防止布局跳动 */
+        'px-4 py-2 h-12 rounded-lg transition-colors duration-200',
+        /* 统一边框基础样式防止宽度变化 */
+        'bg-gray-200 hover:bg-gray-300 border-2 border-transparent',
+        { 'border-blue-500 bg-blue-500 shadow-md': isSelected(mood.value) },
+        /* 使用box-sizing保持尺寸一致并添加flex布局 */
+        'box-border flex items-center justify-center'
       ]"
       @click="handleSelect(mood.value)"
     >
