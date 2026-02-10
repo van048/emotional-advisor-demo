@@ -32,12 +32,12 @@
             推荐理由: {{ item.reason }}
           </div>
           
-          <!-- 按钮预留位置 -->
+          <!-- 快速操作按钮 -->
           <div class="border-t border-gray-200 pt-4 mt-4">
-            <!-- 按钮占位符 -->
-            <div class="h-10 bg-gray-100 rounded-md flex items-center justify-center">
-              开始
-            </div>
+            <QuickActionButton
+              :item="item"
+              class="w-full"
+            />
           </div>
         </div>
       </div>
@@ -47,8 +47,12 @@
 
 <script>
 import { mapState } from 'vuex';
+import QuickActionButton from './QuickActionButton.vue';
 
 export default {
+  components: {
+    QuickActionButton
+  },
   computed: {
     ...mapState(['recommendations'])
   }
