@@ -1,0 +1,52 @@
+<template>
+  <button
+    class="px-4 py-2 rounded transition-colors"
+    :class="{
+      'bg-blue-500 hover:bg-blue-600 text-white': !localExecuting && !isCoffee,
+      'bg-green-500 text-white': !localExecuting && isCoffee,
+      'bg-gray-400 cursor-not-allowed': localExecuting
+    }"
+    :disabled="localExecuting"
+    @click="handleClick"
+  >
+    {{ buttonText }}
+  </button>
+</template>
+
+<script>
+export default {
+  props: {
+    recommendation: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      localExecuting: false
+    };
+  },
+  computed: {
+    isCoffee() {
+      return this.recommendation.type === 'coffee';
+    },
+    buttonText() {
+      if (this.localExecuting) return '制作中...';
+      if (this.isCoffee) return '查看食谱';
+      return '开始制作';
+    }
+  },
+  methods: {
+    handleClick() {
+      this.localExecuting = true;
+      this.$store.dispatch('startExecution', this.recommendation);
+      
+      setTimeout(() => {
+        this.localExecuting = false;
+        this.$emit('execution-complete', this.recommendation);
+        this.$toast.success('制作完成');
+      }, 2000);
+    }
+  }
+};
+</script>
