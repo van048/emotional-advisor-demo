@@ -31,7 +31,7 @@ export default new Vuex.Store({
       let recommendations = []
       
       switch(state.currentMood) {
-        case '疲惫':
+        case 'exhausted':
           recommendations = [
             {
               id: 1,
@@ -43,7 +43,7 @@ export default new Vuex.Store({
             }
           ]
           break
-        case '开心':
+        case 'happy':
           recommendations = [
             {
               id: 2,
@@ -55,7 +55,7 @@ export default new Vuex.Store({
             }
           ]
           break
-        case '想静一静':
+        case 'quiet':
           recommendations = [
             {
               id: 3,
