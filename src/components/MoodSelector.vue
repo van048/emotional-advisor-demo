@@ -15,36 +15,37 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps, defineEmits, computed } from 'vue';
+<script>
 import { mapActions } from 'vuex';
 
-const props = defineProps({
-  value: {
-    type: [String, Number],
-    required: true
+export default {
+  props: {
+    value: {
+      type: [String, Number],
+      required: true
+    }
+  },
+  data() {
+    return {
+      moods: [
+        { value: 'exhausted', label: '😫 疲惫' },
+        { value: 'happy', label: '😄 开心' },
+        { value: 'quiet', label: '🤫 想静一静' }
+      ]
+    };
+  },
+  computed: {
+    isSelected() {
+      return (moodValue) => moodValue === this.value;
+    }
+  },
+  methods: {
+    ...mapActions(['selectMood']),
+    handleSelect(selectedMood) {
+      this.$emit('input', selectedMood);
+      this.selectMood(selectedMood);
+      document.activeElement.setAttribute('aria-pressed', 'true');
+    }
   }
-});
-
-const emit = defineEmits(['input']);
-
-const moods = [
-  { value: 'exhausted', label: '😫 疲惫' },
-  { value: 'happy', label: '😄 开心' },
-  { value: 'quiet', label: '🤫 想静一静' }
-];
-
-const isSelected = computed(() => {
-  return (moodValue) => moodValue === props.value;
-});
-
-// 正确解构使用mapActions
-const { selectMood } = mapActions(['selectMood']);
-
-const handleSelect = (selectedMood) => {
-  emit('input', selectedMood);
-  selectMood(selectedMood);
-  // 添加ARIA反馈
-  document.activeElement.setAttribute('aria-pressed', 'true');
 };
 </script>

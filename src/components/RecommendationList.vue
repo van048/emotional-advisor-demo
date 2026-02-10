@@ -45,17 +45,14 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { mapState } from 'vuex';
-import { computed } from 'vue';
 
-// 使用 mapState 辅助函数映射 store 中的 recommendations
-const { recommendations } = mapState(['recommendations']);
-
-// 将 store 的 state 作为计算属性返回
-computed(() => ({
-  recommendations: store => store.recommendations
-}));
+export default {
+  computed: {
+    ...mapState(['recommendations'])
+  }
+};
 </script>
 
 <style scoped>

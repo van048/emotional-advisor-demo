@@ -6,8 +6,10 @@
   </header>
 </template>
 
-<script setup>
-// 组件逻辑可在此添加
+<script>
+export default {
+  // 组件逻辑可在此添加
+};
 </script>
 
 <style scoped>
