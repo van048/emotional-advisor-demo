@@ -35,7 +35,7 @@
           <!-- 快速操作按钮 -->
           <div class="border-t border-gray-200 pt-4 mt-4">
             <QuickActionButton
-              :item="item"
+              :recommendation="item"
               class="w-full"
             />
           </div>

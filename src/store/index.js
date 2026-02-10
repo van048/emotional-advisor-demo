@@ -28,6 +28,12 @@ export default new Vuex.Store({
       this.dispatch('fetchRecommendations')
     },
     fetchRecommendations({ commit, state }) {
+      // 空值处理
+      if (!state.currentMood) {
+        commit('SET_RECOMMENDATIONS', [])
+        return
+      }
+      
       let recommendations = []
       
       switch(state.currentMood) {
@@ -67,6 +73,9 @@ export default new Vuex.Store({
             }
           ]
           break
+        default:
+          commit('SET_RECOMMENDATIONS', [])
+          return
       }
       
       commit('SET_RECOMMENDATIONS', recommendations)

@@ -38,6 +38,14 @@ export default {
   },
   methods: {
     handleClick() {
+      // 状态验证
+      if (!this.recommendation || !this.recommendation.id || !this.recommendation.type) {
+        this.$toast.error('无效的推荐项');
+        return;
+      }
+      
+      if (this.localExecuting) return;
+      
       this.localExecuting = true;
       this.$store.dispatch('startExecution', this.recommendation);
       
