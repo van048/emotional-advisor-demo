@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 const HomeView = () => import('../views/Home.vue');
 const AboutView = () => import('../views/About.vue');
 const ContactView = () => import('../views/Contact.vue');
+const RecommendationResultView = () => import('../views/RecommendationResult.vue');
 
 Vue.use(VueRouter);
 
@@ -26,6 +27,11 @@ const routes = [
     path: '/contact',
     name: 'contact',
     component: ContactView
+  },
+  {
+    path: '/recommendation/:mood',
+    name: 'recommendation',
+    component: RecommendationResultView
   }
 ];
 

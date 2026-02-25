@@ -6,7 +6,7 @@
       <!-- 疲惫卡片 -->
       <div 
         class="bg-gray-200 p-4 rounded-lg text-center cursor-pointer hover:shadow-md transition-shadow"
-        @click="$router.push('/recommendation?mood=tired')"
+        @click="$router.push('/recommendation/tired')"
       >
         <div class="text-3xl mb-2">😔</div>
         <h3 class="font-medium">疲惫</h3>
@@ -16,7 +16,7 @@
       <!-- 开心卡片 -->
       <div
         class="bg-yellow-100 p-4 rounded-lg text-center cursor-pointer hover:shadow-md transition-shadow"
-        @click="$router.push('/recommendation?mood=happy')"
+        @click="$router.push('/recommendation/happy')"
       >
         <div class="text-3xl mb-2">😊</div>
         <h3 class="font-medium">开心</h3>
@@ -26,7 +26,7 @@
       <!-- 焦虑卡片 -->
       <div
         class="bg-purple-100 p-4 rounded-lg text-center cursor-pointer hover:shadow-md transition-shadow"
-        @click="$router.push('/recommendation?mood=anxious')"
+        @click="$router.push('/recommendation/anxious')"
       >
         <div class="text-3xl mb-2">😰</div>
         <h3 class="font-medium">焦虑</h3>
@@ -36,7 +36,7 @@
       <!-- 想静一静卡片 -->
       <div
         class="bg-green-100 p-4 rounded-lg text-center cursor-pointer hover:shadow-md transition-shadow"
-        @click="$router.push('/recommendation?mood=calm')"
+        @click="$router.push('/recommendation/calm')"
       >
         <div class="text-3xl mb-2">😌</div>
         <h3 class="font-medium">想静一静</h3>

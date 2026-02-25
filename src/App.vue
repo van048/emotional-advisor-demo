@@ -22,7 +22,6 @@ export default {
     async getRecommendationDemo() {
       const params = {
         emotion: 'tired',
-        time: new Date(),
         // TODO 定位
         weather: 'sunny',
         device: {
@@ -43,7 +42,6 @@ export default {
     }
   },
   mounted() {
-    this.getRecommendationDemo()
   }
 }
 </script>
