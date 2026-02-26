@@ -56,52 +56,208 @@ export default {
       recipeId: `recipe-${Date.now()}`,
       name: this._generateRecipeName(context, deviceSpecs),
       steps: this._generateRecipeSteps(context, deviceSpecs),
-      reason: this._generateRecipeReason(context, deviceSpecs)
+      reasons: this._generateRecipeReasons(context, deviceSpecs),
+      // 新增字段
+      duration: this._calculateDuration(context, deviceSpecs),
+      cupSize: this._determineCupSize(context, deviceSpecs),
+      temperature: this._determineTemperature(context, deviceSpecs),
+      difficulty: this._calculateDifficulty(context, deviceSpecs)
     };
-
+    
     return baseRecipe;
   },
 
-  // 生成推荐名称
-  _generateRecipeName(context, deviceSpecs) {
-    const { emotion, timeOfDay, season, weather } = context;
-    const deviceAdjective = deviceSpecs.maxPressure < 12 ? "轻压" : "高压";
-    const weatherSuffix = weather === "rain" ? "雨天特调" : "经典版";
+  // 计算制作总时长（秒）
+  _calculateDuration(context, deviceSpecs) {
+    const { timeOfDay, season, weather } = context;
+    let baseDuration = 120; // 基础时长
     
-    return `${deviceAdjective}${emotion}·${timeOfDay}${season}${weatherSuffix}`;
+    // 根据时间段调整
+    if (timeOfDay === "night") baseDuration -= 20;
+    
+    // 根据季节调整
+    if (season === "summer") baseDuration -= 15;
+    
+    // 根据天气调整
+    if (weather === "rain") baseDuration += 10;
+    
+    // 根据设备能力调整
+    if (deviceSpecs.maxPressure && deviceSpecs.maxPressure < 15) {
+      baseDuration += 15; // 压力不足时增加准备时间
+    }
+    
+    return Math.max(60, Math.min(300, baseDuration)); // 限制在1-5分钟
+  },
+
+  // 确定杯量大小
+  _determineCupSize(context, deviceSpecs) {
+    const { emotion, timeOfDay } = context;
+    
+    // 优先根据设备能力决定
+    if (deviceSpecs.supportedCupSizes?.includes("large")) return "大杯";
+    
+    // 根据情绪决定
+    if (emotion === "tired" || emotion === "sad") return "大杯";
+    if (emotion === "anxious" || emotion === "excited") return "小杯";
+    
+    // 根据时间段决定
+    if (timeOfDay === "morning") return "大杯";
+    if (timeOfDay === "night") return "小杯";
+    
+    // 默认中杯
+    return "中杯";
+  },
+
+  // 确定温度（℃）
+  _determineTemperature(context, deviceSpecs) {
+    const { season, weather } = context;
+    let baseTemp = 65; // 基础温度
+    
+    // 根据季节调整
+    if (season === "winter") baseTemp += 10;
+    if (season === "summer") baseTemp -= 10;
+    
+    // 根据天气调整
+    if (weather === "rain") baseTemp += 5;
+    
+    // 设备能力限制
+    if (deviceSpecs.maxTemperature && deviceSpecs.maxTemperature < baseTemp) {
+      return deviceSpecs.maxTemperature;
+    }
+    
+    return baseTemp;
+  },
+
+  // 计算难度等级
+  _calculateDifficulty(context, deviceSpecs) {
+    // 基于设备能力判断
+    const hasAdvancedFeatures = deviceSpecs.supportedCoffees?.includes("latte") &&
+                               deviceSpecs.maxPressure >= 15 &&
+                               deviceSpecs.maxTemperature >= 85;
+    
+    // 基于情绪类型判断
+    const isComplexEmotion = ["anxious", "confident", "hopeful"].includes(context.emotion);
+    
+    // 综合判断逻辑
+    if (hasAdvancedFeatures && isComplexEmotion) return "高级";
+    if (hasAdvancedFeatures || isComplexEmotion) return "中级";
+
+    return "初级";
+  },
+
+  // 生成推荐名称
+  // eslint-disable-next-line no-unused-vars
+  _generateRecipeName(context, deviceSpecs) {
+    const { timeOfDay, weather } = context;
+    const baseNames = {
+      morning: ["晨曦唤醒", "朝气拿铁", "早安特调"],
+      day: ["午后轻享", "活力冰美式", "阳光摩卡"],
+      night: ["夜幕低因", "星空拿铁", "晚安特调"]
+    };
+    const weatherSuffix = weather === "rain" ? "雨天特调" : "经典版";
+    const randomName = baseNames[timeOfDay][Math.floor(Math.random() * baseNames[timeOfDay].length)];
+    
+    return `${randomName}${weatherSuffix}`;
   },
 
   // 生成推荐步骤
   _generateRecipeSteps(context, deviceSpecs) {
     const steps = [];
+    const baseTemp = Math.floor(Math.random() * (80 - 40 + 1)) + 40;
     
-    // 研磨步骤
+    // 准备步骤
     steps.push({
       id: "step1",
-      description: "研磨咖啡豆",
-      params: `${deviceSpecs.maxPressure * 2}g，${context.season === "summer" ? "粗" : "细"}研磨度`
+      description: "预热设备",
+      params: `设备预热至${baseTemp - 5}℃`
     });
     
     // 萃取步骤
     steps.push({
       id: "step2",
-      description: "萃取浓缩咖啡",
-      params: `水温${context.weather === "rain" ? 90 : 95}℃，压力${deviceSpecs.maxPressure}bar，${context.timeOfDay === "night" ? 25 : 30}ml，${context.season === "winter" ? 30 : 25}秒`
+      description: "专业萃取",
+      params: `水温${baseTemp}℃，压力${deviceSpecs.maxPressure}bar，时长${context.timeOfDay === "night" ? 25 : 30}ml，${context.season === "winter" ? 30 : 25}秒`
     });
     
     // 牛奶处理（如果设备支持）
     if (deviceSpecs.supportedCoffees?.includes("latte")) {
       steps.push({
         id: "step3",
-        description: "打发牛奶",
-        params: `${deviceSpecs.flowRate ? deviceSpecs.flowRate * 3 : 150}ml全脂牛奶，${context.timeOfDay === "night" ? 55 : 65}℃，${context.weather === "rain" ? "厚" : "薄"}奶泡`
+        description: "奶泡制作",
+        params: `${deviceSpecs.flowRate ? deviceSpecs.flowRate * 3 : 150}ml全脂牛奶，${baseTemp + 5}℃，${context.weather === "rain" ? "绵密" : "轻盈"}奶泡`
       });
     }
     
     return steps;
   },
 
-  // 生成推荐理由
+  // 生成推荐理由数组
+  _generateRecipeReasons(context, deviceSpecs) {
+    const { emotion, timeOfDay, season, weather } = context;
+    const { maxPressure, maxTemperature } = deviceSpecs;
+    
+    const scenarios = {
+      morning: "适合早晨提神",
+      day: "午后能量补充",
+      night: "夜间低因享受"
+    };
+    
+    const healthTips = {
+      highSugar: "高糖配方，建议适量",
+      lowSugar: "低糖健康配方",
+      noSugar: "无糖控卡选择"
+    };
+    
+    const randomScenario = scenarios[timeOfDay];
+    const randomHealth = healthTips[Object.keys(healthTips)[Math.floor(Math.random() * 3)]];
+    
+    let emotionChinese;
+    switch (emotion) {
+      case "happy":
+        emotionChinese = "开心";
+        break;
+      case "sad":
+        emotionChinese = "伤心";
+        break;
+      case "angry":
+        emotionChinese = "生气";
+        break;
+      case "tired":
+        emotionChinese = "疲惫";
+        break;
+      case "excited":
+        emotionChinese = "兴奋";
+        break;
+      case "lonely":
+        emotionChinese = "孤独";
+        break;
+      case "anxious":
+        emotionChinese = "焦虑";
+        break;
+      case "confident":
+        emotionChinese = "自信";
+        break;
+      case "relaxed":
+        emotionChinese = "放松";
+        break;
+      case "calm":
+        emotionChinese = "平静";
+        break;
+      case "content":
+        emotionChinese = "满足";
+        break;
+      case "hopeful":
+        emotionChinese = "期望";
+        break;
+    }
+    return [
+      `适合情绪：${emotionChinese}，${randomScenario}，${weather === "rain" ? "雨天" : "晴朗"}天气适配`,
+      `${randomHealth}，${season}季节特别配方`,
+      `设备参数智能适配：${maxPressure}bar压力，${maxTemperature ? maxTemperature + "℃" : "常温"}`
+    ];
+  },
+  
+  // 生成推荐理由（旧方法保留用于兼容）
   _generateRecipeReason(context, deviceSpecs) {
     const { emotion, timeOfDay, season, weather } = context;
     const { maxPressure, maxTemperature } = deviceSpecs;
@@ -179,6 +335,12 @@ export default {
         name: recipe.name,
         steps: recipe.steps || [],
         reason: recipe.reason || "使用智能推荐参数",
+        reasons: recipe.reasons,
+        // 新增字段兼容性处理
+        duration: recipe.duration || 120,
+        cupSize: recipe.cupSize || "中杯",
+        temperature: recipe.temperature || 65,
+        difficulty: recipe.difficulty || "中级",
         status: "success",
         metadata: {
           promptSnapshot: prompt,
