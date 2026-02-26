@@ -48,7 +48,7 @@ export default {
   // 模拟大模型推理
   async simulateLLMInference(prompt) {
     // 模拟网络延迟
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     // 基于Prompt内容生成动态推荐
     const { context, deviceSpecs } = prompt;
