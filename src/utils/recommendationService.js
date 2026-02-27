@@ -45,6 +45,47 @@ export default {
     };
   },
 
+  // 模拟咖啡机API调用
+  eventListeners: {},
+  on(event, callback) {
+    if (!this.eventListeners[event]) {
+      this.eventListeners[event] = [];
+    }
+    this.eventListeners[event].push(callback);
+  },
+  emit(event, data) {
+    if (this.eventListeners[event]) {
+      this.eventListeners[event].forEach(cb => cb(data));
+    }
+  },
+  _makeCoffeeTimeout: null,
+  async makeCoffee() {
+    console.log('TODO 下发完整参数至咖啡机，咖啡机自动执行全部步骤')
+    const delay = Math.floor(Math.random() * (12000 - 8000 + 1)) + 8000;
+    this.emit('statusChange', 'started');
+    
+    return new Promise(resolve => {
+      this._makeCoffeeTimeout = setTimeout(() => {
+        console.log('TODO 咖啡机上报完成状态')
+        this.emit('statusChange', 'completed');
+        resolve({ success: true });
+      }, delay);
+    });
+  },
+
+  // 模拟停止咖啡机API调用
+  // TODO 发送停止指令，咖啡机停止工作
+  async stopCoffee() {
+    console.log('TODO 发送停止指令，咖啡机停止工作，状态恢复为开始制作前状态')
+    if (this._makeCoffeeTimeout) {
+      clearTimeout(this._makeCoffeeTimeout);
+      this._makeCoffeeTimeout = null;
+      this.emit('statusChange', 'stopped');
+      return { success: true };
+    }
+    return { success: false };
+  },
+
   // 模拟大模型推理
   async simulateLLMInference(prompt) {
     // 模拟网络延迟
