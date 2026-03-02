@@ -63,7 +63,7 @@ export default {
   _makeCoffeeTimeout: null,
   async makeCoffee() {
     console.log('TODO 下发完整参数至咖啡机，咖啡机自动执行全部步骤')
-    const delay = Math.floor(Math.random() * (12000 - 8000 + 1)) + 8000;
+    const delay = Math.floor(Math.random() * (5000 - 3000 + 1)) + 3000;
     this.emit('statusChange', 'started');
     
     return new Promise(resolve => {

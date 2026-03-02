@@ -301,7 +301,7 @@ export default {
           if (this.progress < 95) {
             this.progress += Math.random() * 5;
           }
-        }, 300);
+        }, 75);
 
         // 调用咖啡机API
         await recommendationService.makeCoffee();
