@@ -113,7 +113,7 @@
           <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
           </svg>
-          咖啡机将按上述步骤自动完成制作，请确认物料已准备就绪
+          咖啡机将自动完成制作，请确认物料已准备就绪
         </div>
         <button
           class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg
@@ -158,7 +158,7 @@
           <p class="text-sm text-gray-600 mb-6">
             <span v-if="recommendation">
               即将开始制作『{{ recommendation.name }}』，预计{{ recommendation.duration }}秒。
-              请确认{{ recommendation.materials || '咖啡豆、牛奶' }}已就位。
+              请确认{{ recommendation.materials || '咖啡豆等' }}已就位。
             </span>
             <span v-else>加载中...</span>
           </p>
@@ -201,7 +201,7 @@
       <div v-if="isMaking" class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg z-40">
         <div class="mb-2 flex justify-between items-center">
           <span class="text-sm font-medium">制作中，请稍候...</span>
-          <span class="text-sm font-medium">{{ progress }}%</span>
+          <span class="text-sm font-medium">{{ Math.floor(progress) }}%</span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2.5">
           <div
