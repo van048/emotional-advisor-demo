@@ -1,4 +1,4 @@
-const axios = require('axios');
+// const axios = require('axios');
 
 // AI推荐引擎服务
 export default {
@@ -89,33 +89,94 @@ export default {
   },
 
   async LLMInference(prompt) {    
-    const apiKey = 'app-58sX2wptDes2iLiiPcM6GKHI'; // 替换为您的实际 API 密钥
-    const aigcUser = 'abc-123';
-    const url = 'https://aigc.midea.com/dify2/server/v1/workflows/run';
+    // const apiKey = 'app-58sX2wptDes2iLiiPcM6GKHI'; // 替换为您的实际 API 密钥
+    // const aigcUser = 'abc-123';
+    // const url = 'https://aigc.midea.com/dify2/server/v1/workflows/run';
     
-    const headers = {
-      Authorization: `Bearer ${apiKey}`,
-      'AIGC-USER': aigcUser,
-      'Content-Type': 'application/json'
-    };
+    // const headers = {
+    //   Authorization: `Bearer ${apiKey}`,
+    //   'AIGC-USER': aigcUser,
+    //   'Content-Type': 'application/json'
+    // };
     
-    const data = {
-      inputs: {
-        coffee_recipe_requirement:JSON.stringify(prompt.context)
-      },
-      response_mode: 'blocking',
-      user: aigcUser
-    };
+    // const data = {
+    //   inputs: {
+    //     coffee_recipe_requirement:JSON.stringify(prompt.context)
+    //   },
+    //   response_mode: 'blocking',
+    //   user: aigcUser
+    // };
     
-    let baseRecipe = {}
-    try {
-      const response = await axios.post(url, data, { headers });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
+    // let baseRecipe = {}
+    // try {
+    //   const response = await axios.post(url, data, { headers });
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    
+    // return baseRecipe;
+    console.log(prompt.context)
+    // 模拟网络延迟
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    return {
+  "recipeId": "115011",
+  "name": "生椰拿铁",
+  "steps": [
+    {
+      "id": "736911",
+      "description": "把咖啡杯放于出液口下方，使用COLMO咖啡机制作一份浓缩咖啡液",
+      "params": ""
+    },
+    {
+      "id": "736913",
+      "description": "在杯中倒入冰厚椰乳至八分满",
+      "params": ""
+    },
+    {
+      "id": "736915",
+      "description": "在咖啡杯中加入适量冰块，即可制作完成",
+      "params": ""
     }
-    
-    return baseRecipe;
+  ],
+  "reason": "根据您的个人状态（情绪焦虑、白天、春季、天气晴朗），推荐这款生椰拿铁。它的口感柔和、香气浓郁，椰浆的甜味和奶香与浓缩咖啡的苦味完美融合，带有淡淡的椰子香气，清新怡人。这种温和、甜美的风味有助于缓解焦虑情绪，带来放松和愉悦感。在阳光明媚的春季白天，一杯清凉的生椰拿铁能为您提供清爽的享受，同时制作简单快捷，适合您当前的需求。",
+  "reasons": [
+    "情绪匹配：焦虑时，温和、甜美的椰香咖啡能带来安抚和放松。",
+    "季节匹配：春季适合清爽、带果香的饮品。",
+    "时间匹配：白天适合饮用咖啡因饮品提神。",
+    "天气匹配：晴朗天气适合清凉、清新的咖啡。",
+    "制作便捷：准备和制作时间短，适合快速享用。"
+  ],
+  "duration": 300,
+  "cupSize": "3",
+  "temperature": 0,
+  "difficulty": "2",
+  "status": "推荐",
+  "metadata": {
+    "promptSnapshot": {
+      "context": {
+        "emotion": "anxious",
+        "timeOfDay": "day",
+        "season": "spring",
+        "weather": "sunny",
+        "timestamp": "2026-03-02T07:15:15.425Z"
+      },
+      "deviceSpecs": {
+        "maxPressure": 0,
+        "supportedCoffees": []
+      },
+      "constraints": {
+        "parameterProtection": "",
+        "outputFormat": {
+          "name": "",
+          "steps": [],
+          "reason": ""
+        }
+      }
+    },
+    "timestamp": "2026-03-02T07:15:15.425Z"
+  }
+}
   },
 
   // 模拟大模型推理
