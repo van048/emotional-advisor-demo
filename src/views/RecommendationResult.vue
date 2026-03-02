@@ -77,29 +77,36 @@
       </div>
       
       <!-- 时间轴容器 -->
-      <div class="space-y-4 overflow-hidden transition-all duration-300"
-           :style="{ maxHeight: isExpanded ? 'auto' : '200px' }">
+      <div class="space-y-1 overflow-hidden transition-all duration-300"
+           :style="{ maxHeight: isExpanded ? 'auto' : '400px' }">
         <div
-          v-for="(step, index) in visibleSteps"
+          v-for="(step) in visibleSteps"
           :key="step.id"
-          class="relative pl-8 pb-6"
+          class="relative pl-12 pb-8 md:pl-16"
         >
           <!-- 时间轴竖线 -->
           <div
-            v-if="index !== visibleSteps.length - 1"
-            class="absolute left-3.5 top-6 h-full w-0.5 bg-gray-300"
+            class="absolute left-4 md:left-5 top-0 h-full w-0.5 bg-blue-200"
           ></div>
           
-          <!-- 步骤圆点 -->
-          <div class="absolute left-0 top-4 w-7 h-7 rounded-full
-               bg-gray-200 flex items-center justify-center">
-            <span class="text-sm font-medium text-gray-600">{{ index + 1 }}</span>
+          <!-- 步骤图标 -->
+          <div class="absolute left-1.5 top-0 w-8 h-8 rounded-full
+               bg-white border-2 flex items-center justify-center"
+               :class="{
+                 'border-blue-500': step.type === 'auto',
+                 'border-amber-500': step.type === 'manual'
+               }">
+            <span class="text-lg" v-if="step.type === 'auto'">🤖</span>
+            <span class="text-lg" v-else>✋</span>
           </div>
           
           <!-- 步骤内容 -->
-          <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100 ml-2">
-            <div class="font-medium mb-1">{{ step.description }}</div>
-            <div class="text-sm text-gray-600">{{ step.params }}</div>
+          <div class="bg-white rounded-lg p-5 shadow-md border border-gray-200">
+            <div class="font-semibold mb-2 text-gray-800">{{ step.description }}</div>
+            <div class="mt-2" v-if="step.params">
+              <pre class="bg-gray-50 p-3 rounded-md text-sm font-mono overflow-x-auto"
+              >{{ step.params }}</pre>
+            </div>
           </div>
         </div>
         <div class="h-20"></div>
@@ -113,7 +120,7 @@
           <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
           </svg>
-          咖啡机将自动完成制作，请确认物料已准备就绪
+          点击【开始制作】执行预设自动程序，请确保物料准备就绪。
         </div>
         <button
           class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg
@@ -158,7 +165,7 @@
           <p class="text-sm text-gray-600 mb-6">
             <span v-if="recommendation">
               即将开始制作『{{ recommendation.name }}』，预计{{ recommendation.duration }}秒。
-              请确认{{ recommendation.materials || '咖啡豆等' }}已就位。
+              请确认{{ recommendation.materials || '咖啡豆等物料' }}已就位。
             </span>
             <span v-else>加载中...</span>
           </p>
