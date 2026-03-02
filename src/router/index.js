@@ -36,8 +36,13 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: 'history',
   routes
+});
+
+// 添加调试日志
+router.beforeEach((to, from, next) => {
+  console.log('[路由调试] 正在导航到:', to, to.path);
+  next();
 });
 
 export default router;
