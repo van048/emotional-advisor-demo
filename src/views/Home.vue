@@ -1,46 +1,37 @@
 <template>
   <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-6 text-center">此刻，你的心情是？</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">此刻，你的心情是？</h1>
     
-    <div class="grid grid-cols-2 gap-4 max-w-md mx-auto mb-6">
-      <!-- 疲惫卡片 -->
-      <div 
-        class="bg-gray-200 p-4 rounded-lg text-center cursor-pointer hover:shadow-md transition-shadow"
-        @click="$router.push('/recommendation/tired')"
-      >
-        <div class="text-3xl mb-2">😔</div>
-        <h3 class="font-medium">疲惫</h3>
-        <p class="text-sm text-gray-600 mt-1">身体需要被温柔对待</p>
-      </div>
-      
-      <!-- 开心卡片 -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-md mx-auto mb-6">
+      <!-- 情绪卡片容器 -->
       <div
-        class="bg-yellow-100 p-4 rounded-lg text-center cursor-pointer hover:shadow-md transition-shadow"
-        @click="$router.push('/recommendation/happy')"
+        v-for="(mood, index) in moods"
+        :key="index"
+        class="relative overflow-hidden rounded-2xl p-6 text-center cursor-pointer transition-all duration-300 transform hover:scale-105"
+        :class="[
+          mood.bgClass,
+          'backdrop-blur-sm',
+          'shadow-lg',
+          'hover:shadow-xl',
+          'active:shadow-inner',
+          'active:translate-y-1',
+          'hover:shadow-2xl',
+          'hover:translate-y-[-2px]'
+        ]"
+        @click="handleMoodSelect(mood.route)"
       >
-        <div class="text-3xl mb-2">😊</div>
-        <h3 class="font-medium">开心</h3>
-        <p class="text-sm text-gray-600 mt-1">让快乐再延续一会儿</p>
-      </div>
-      
-      <!-- 焦虑卡片 -->
-      <div
-        class="bg-purple-100 p-4 rounded-lg text-center cursor-pointer hover:shadow-md transition-shadow"
-        @click="$router.push('/recommendation/anxious')"
-      >
-        <div class="text-3xl mb-2">😰</div>
-        <h3 class="font-medium">焦虑</h3>
-        <p class="text-sm text-gray-600 mt-1">深呼吸，慢慢来</p>
-      </div>
-      
-      <!-- 想静一静卡片 -->
-      <div
-        class="bg-green-100 p-4 rounded-lg text-center cursor-pointer hover:shadow-md transition-shadow"
-        @click="$router.push('/recommendation/calm')"
-      >
-        <div class="text-3xl mb-2">😌</div>
-        <h3 class="font-medium">想静一静</h3>
-        <p class="text-sm text-gray-600 mt-1">给自己一段独处时光</p>
+        <!-- 卡片装饰元素 -->
+        <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-30"></div>
+        
+        <!-- 卡片内容 -->
+        <div class="relative z-10">
+          <div class="text-4xl mb-3">{{ mood.emoji }}</div>
+          <h3 class="font-bold text-lg mb-1">{{ mood.title }}</h3>
+          <p class="text-sm opacity-80">{{ mood.description }}</p>
+        </div>
+        
+        <!-- 卡片底部装饰 -->
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
       </div>
     </div>
     
@@ -53,8 +44,47 @@
 <script>
 export default {
   name: 'HomeView',
-  // 后续可扩展：添加情绪选择埋点等逻辑
-}
+  data() {
+    return {
+      moods: [
+        {
+          title: '疲惫',
+          description: '身体需要被温柔对待',
+          emoji: '😔',
+          bgClass: 'bg-gradient-to-br from-gray-200/80 to-gray-100',
+          route: '/recommendation/tired'
+        },
+        {
+          title: '开心',
+          description: '让快乐再延续一会儿',
+          emoji: '😊',
+          bgClass: 'bg-gradient-to-br from-yellow-200/80 to-yellow-100',
+          route: '/recommendation/happy'
+        },
+        {
+          title: '焦虑',
+          description: '深呼吸，慢慢来',
+          emoji: '😰',
+          bgClass: 'bg-gradient-to-br from-purple-200/80 to-purple-100',
+          route: '/recommendation/anxious'
+        },
+        {
+          title: '想静一静',
+          description: '给自己一段独处时光',
+          emoji: '😌',
+          bgClass: 'bg-gradient-to-br from-green-200/80 to-green-100',
+          route: '/recommendation/calm'
+        }
+      ]
+    };
+  },
+  methods: {
+    handleMoodSelect(route) {
+      // 添加点击反馈动画
+      this.$router.push(route);
+    }
+  }
+};
 </script>
 
 <style scoped>

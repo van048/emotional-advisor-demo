@@ -82,15 +82,15 @@
         <div
           v-for="(step) in visibleSteps"
           :key="step.id"
-          class="relative pl-12 pb-8 md:pl-16"
+          class="relative pl-12 pb-8 "
         >
           <!-- 时间轴竖线 -->
           <div
-            class="absolute left-4 md:left-5 top-0 h-full w-0.5 bg-blue-200"
+            class="absolute left-4 top-0 h-full w-0.5 bg-blue-200"
           ></div>
           
           <!-- 步骤图标 -->
-          <div class="absolute left-1.5 top-0 w-8 h-8 rounded-full
+          <div class="absolute left-0 top-0 w-8 h-8 rounded-full
                bg-white border-2 flex items-center justify-center"
                :class="{
                  'border-blue-500': step.type === 'auto',
@@ -120,7 +120,7 @@
           <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
           </svg>
-          点击【开始制作】执行预设自动程序，请确保物料准备就绪。
+          点击后将执行预设自动程序，请确保物料准备就绪。
         </div>
         <button
           class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg
