@@ -78,7 +78,7 @@
       
       <!-- 时间轴容器 -->
       <div class="space-y-4 overflow-hidden transition-all duration-300"
-           :style="{ maxHeight: isExpanded ? '1000px' : '200px' }">
+           :style="{ maxHeight: isExpanded ? 'auto' : '200px' }">
         <div
           v-for="(step, index) in visibleSteps"
           :key="step.id"
@@ -102,6 +102,7 @@
             <div class="text-sm text-gray-600">{{ step.params }}</div>
           </div>
         </div>
+        <div class="h-20"></div>
       </div>
     </div>
 
