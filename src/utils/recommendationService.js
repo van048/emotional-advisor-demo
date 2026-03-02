@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 // AI推荐引擎服务
 export default {
   // 季节推断函数（北半球标准）
@@ -84,6 +86,36 @@ export default {
       return { success: true };
     }
     return { success: false };
+  },
+
+  async LLMInference(prompt) {    
+    const apiKey = 'app-58sX2wptDes2iLiiPcM6GKHI'; // 替换为您的实际 API 密钥
+    const aigcUser = 'abc-123';
+    const url = 'https://aigc.midea.com/dify2/server/v1/workflows/run';
+    
+    const headers = {
+      Authorization: `Bearer ${apiKey}`,
+      'AIGC-USER': aigcUser,
+      'Content-Type': 'application/json'
+    };
+    
+    const data = {
+      inputs: {
+        coffee_recipe_requirement:JSON.stringify(prompt.context)
+      },
+      response_mode: 'blocking',
+      user: aigcUser
+    };
+    
+    let baseRecipe = {}
+    try {
+      const response = await axios.post(url, data, { headers });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+    
+    return baseRecipe;
   },
 
   // 模拟大模型推理
@@ -364,9 +396,11 @@ export default {
     try {
       // 构建Prompt
       const prompt = this.buildPrompt({ emotion, time, weather, device });
+      console.log('prompt.context',prompt.context)
       
       // 调用模拟大模型
-      let recipe = await this.simulateLLMInference(prompt);
+      // let recipe = await this.simulateLLMInference(prompt);
+      let recipe = await this.LLMInference(prompt);
       
       // 应用参数保护
       recipe = this.applyParameterProtection(recipe, device);
