@@ -244,6 +244,7 @@ export default {
   name: "RecommendationResult",
   data() {
     return {
+      interval: null,
       recommendation: null,
       isExpanded: true,
       isMaking: false,
@@ -276,8 +277,10 @@ export default {
         case 'completed':
           this.progress = 100;
           this.isMaking = false;
+          clearInterval(this.interval)
           break;
         case 'stopped':
+          clearInterval(this.interval)
           this.isPaused = false;
           this.isMaking = false;
           this.progress = 0;
@@ -296,18 +299,17 @@ export default {
       }
 
       try {
+        clearInterval(this.interval)
         // 启动进度条动画（从当前进度继续）
-        const interval = setInterval(() => {
+        this.interval = setInterval(() => {
           if (this.progress < 95) {
             this.progress += Math.random() * 5;
+            console.log(this.progress)
           }
         }, 75);
 
         // 调用咖啡机API
         await recommendationService.makeCoffee();
-        
-        // 完成进度由事件驱动更新，不直接设置
-        clearInterval(interval);
       } catch (error) {
         console.error("制作失败:", error);
         this.isMaking = false;
@@ -324,29 +326,6 @@ export default {
         console.error("停止失败:", error);
         this.isMaking = true;
         this.isPaused = false;
-      }
-    },
-
-    async resumeMaking() {
-      this.isPaused = false;
-      this.isMaking = true;
-
-      try {
-        // 启动进度条动画（从当前进度继续）
-        const interval = setInterval(() => {
-          if (this.progress < 95) {
-            this.progress += Math.random() * 5;
-          }
-        }, 300);
-
-        // 调用咖啡机API继续制作
-        await recommendationService.makeCoffee();
-        
-        // 完成进度由事件驱动更新，不直接设置
-        clearInterval(interval);
-      } catch (error) {
-        console.error("继续制作失败:", error);
-        this.isMaking = false;
       }
     },
 
