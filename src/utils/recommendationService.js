@@ -111,6 +111,7 @@ export default {
     // try {
     //   const response = await axios.post(url, data, { headers });
     //   console.log(response.data);
+    //   baseRecipe = response.data.data.outputs.result
     // } catch (error) {
     //   console.error(error);
     // }
