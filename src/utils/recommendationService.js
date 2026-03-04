@@ -1,4 +1,4 @@
-// const axios = require('axios');
+const axios = require('axios');
 
 // AI推荐引擎服务
 export default {
@@ -89,37 +89,35 @@ export default {
   },
 
   async LLMInference(prompt) {    
-    // const apiKey = 'app-58sX2wptDes2iLiiPcM6GKHI'; // 替换为您的实际 API 密钥
-    // const aigcUser = 'abc-123';
-    // const url = 'https://aigc.midea.com/dify2/server/v1/workflows/run';
+    const apiKey = 'app-58sX2wptDes2iLiiPcM6GKHI'; // 替换为您的实际 API 密钥
+    const aigcUser = 'abc-123';
+    const url = 'http://10.33.119.65:3000/api/workflows/run';
     
-    // const headers = {
-    //   Authorization: `Bearer ${apiKey}`,
-    //   'AIGC-USER': aigcUser,
-    //   'Content-Type': 'application/json'
-    // };
+    const headers = {
+      Authorization: `Bearer ${apiKey}`,
+      'AIGC-USER': aigcUser,
+      'Content-Type': 'application/json'
+    };
     
-    // const data = {
-    //   inputs: {
-    //     coffee_recipe_requirement:JSON.stringify(prompt.context)
-    //   },
-    //   response_mode: 'blocking',
-    //   user: aigcUser
-    // };
+    const data = {
+      inputs: {
+        coffee_recipe_requirement:JSON.stringify(prompt.context)
+      },
+      response_mode: 'blocking',
+      user: aigcUser
+    };
     
-    // let baseRecipe = {}
-    // try {
-    //   const response = await axios.post(url, data, { headers });
-    //   console.log(response.data);
-    //   baseRecipe = response.data.data.outputs.result
-    // } catch (error) {
-    //   console.error(error);
-    // }
-    
-    // return baseRecipe;
+    let baseRecipe = {}
+    try {
+      const response = await axios.post(url, data, { headers });
+      console.log(response.data);
+      baseRecipe = response.data.data.outputs.result
+    } catch (error) {
+      console.error(error);
+
     console.log(prompt.context)
     // 模拟网络延迟
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     return {
   "recipeId": "115021",
   "name": "莫吉托咖啡",
@@ -215,6 +213,9 @@ export default {
     "timestamp": "2026-03-02T07:15:15.425Z"
   }
 }
+    }
+    
+    return baseRecipe;
   },
 
   // 模拟大模型推理
